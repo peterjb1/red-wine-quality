@@ -1,0 +1,8 @@
+Red Wine Analysis by Peter B
+========================================================
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# packages of interest to load up
+library(ggplot2)
+```
+
+# Univariate Analysis
