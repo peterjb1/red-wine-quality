@@ -1,8 +1,26 @@
-Red Wine Analysis by Peter B
+#Analysis of Red Wine Quality
+###Peter Baek
 ========================================================
+
+##Abstract
+In 2013, theguardian, a UK based news company, posted an article with the title "Wine-tasting: it's junk science." This article covered an experiment in which expert wine-tasters were unable to identify whether 2 wines came from the same bottle or not, and even exaggerated differences after the same wine, but with different labels, were shown and given for tasting. I will not conducting an experiment in this avenue of whether wine-testers can figure out what exactly they are tasting. Instead, I will assess the pure physical composition of a wine and ratings by multiple wine-experts on its taste, and see if there is a relatonship between a wine's composition and the wine-experts' ratings, and if there is, in what way and interpret why.
+##Dataset
+Agenda:
+1. Origin of the data, where, date, etc
+2. Summary of the dataset: Variables and description of variables
+3. Preparation
 ```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
 # packages of interest to load up
 library(ggplot2)
 ```
 
-# Univariate Analysis
+##Analysis
+Univariate Plot Analysis
+Univariate Analysis
+Bivariate Plot Analysis
+Bivariate Analysis
+Multivariate Plot Analysis
+Multivariate Analysis
+
+##Final Analysis and Plots
+##Reflections

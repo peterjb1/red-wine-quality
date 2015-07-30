@@ -1,12 +1,12 @@
 Red Wine Analysis by Peter
 ===========================
 
-I will analyze a red wine dataset, which contains data on a a wine's chemical properties and its quality as ranked by wine tasters.
+Does the data back wine-experts, or are they full of it?
 
 Files:
 
 
-Red-Wine-Readme.md
+readme.md
 
 Red-Wine.rmd
 
