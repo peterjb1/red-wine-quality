@@ -1,26 +1,59 @@
-#Analysis of Red Wine Quality
-###Peter Baek
-========================================================
-
-##Abstract
+---
+title: "Analysis of Red Wine Quality by Peter Baek"
+output:
+  html_document:
+    toc: yes
+  pdf_document:
+    toc: yes
+---  
+##Abstract  
 In 2013, theguardian, a UK based news company, posted an article with the title "Wine-tasting: it's junk science." This article covered an experiment in which expert wine-tasters were unable to identify whether 2 wines came from the same bottle or not, and even exaggerated differences after the same wine, but with different labels, were shown and given for tasting. I will not conducting an experiment in this avenue of whether wine-testers can figure out what exactly they are tasting. Instead, I will assess the pure physical composition of a wine and ratings by multiple wine-experts on its taste, and see if there is a relatonship between a wine's composition and the wine-experts' ratings, and if there is, in what way and interpret why.
-##Dataset
-Agenda:
-1. Origin of the data, where, date, etc
-2. Summary of the dataset: Variables and description of variables
-3. Preparation
-```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
-# packages of interest to load up
-library(ggplot2)
-```
 
-##Analysis
-Univariate Plot Analysis
-Univariate Analysis
-Bivariate Plot Analysis
-Bivariate Analysis
-Multivariate Plot Analysis
-Multivariate Analysis
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# Preparation  
+# packages of interest to load up  
+wine <- read.csv("wineQualityReds.csv")  
+wine$X <- NULL #Unnecessary column
+library(ggplot2)  
+```
+###1. Introduction
+The dataset is created by Paulo Cortez, ANtonio Credeira, Fernando Almeida, Telm Matos and Jose Reis in the year 2009. The dataset was used to write a paper called "Modeling wine preferences by data mining from physicochemical properties" by the previously named people. The type of red wine used are variants of the Portuguese "Vinho Verde" wine. This dataset contains only physicochemical and sensory variables, and there is no data with regards to grape types, wine brand, or wine selling price.
+
+###2. Description of variables    
+```{r echo=FALSE}
+str(wine)
+```
+n = 1599  
+Quantitative varibles: 12  
+Qualitative variables: 0  
+
+1. fixed acidity (tartaric acid-g/L): Most acids involved with wine or fixed or nonvolatile.
+2. volatile acidity (acetic acid -g/L): The amount of acetic acid in wine, which at too high of levels can lead to an unpleasant, vinegar taste.
+3. citric acid (g/L): citric acid can add 'freshness' and flavor to wines.
+4. residual sugar (g/L): amount of sugar remaining after fermentation stops, wines with greater than 45 grams/liter are considered sweet.
+5. chlorides (sodium chloride-g/L): amount of salt in the wine
+6. free sulfur dioxide (mg/L): prevents microbial growth and the oxidation of wine
+7. total sulfur dioxide (mg/L): amount of free and bound forms of S02; in low concentrations, SO2 is mostly undetectable in wine, but at free SO2 concentrations over 50 ppm, SO2 becomes evident in the nose and taste of wine
+8. density (g/mL): density of water depending on the percent alcohol and sugar content
+9. pH: describes how acidic or basic a wine is on a scale from 0 (very acidic) to 14 (very basic)
+10. sulphates (potassium sulphate -g/L): wine additive which can contribute to sulfur dioxide gas (S02) levels
+11. alcohol (% by volume): percent alcohol content of the wine
+12. quality (score between 0 and 10): 10 is highest quality rating, 0 is lowest.
+
+```{r echo=FALSE}
+summary(wine)
+```
+**Summary of Data**  
+All of the variables have a mean and median that are close to each other, which suggests that there are not significant outliers in the dataset. To note however, chlorides, residual sugar, free sulfur dioxde, and total sulfur dioxide have max values that pulls the mean from the median, but I will need to dig further to see why and how it affects my analysis of the input variables. Keeping what I said in mind, the 1st quartile for quality is 5 and the 3rd quartile for quality is 6. Whatever a ranking of 5-6 means, it will probably reflect the median/mean values of the variables.  
+To understand this data, I will proceed in 2 ways. First, I need to gain a deeper understanding of variables in the context of wine tasting. Second, I will see how individual and grouped changes to variables affect the quality.  
+
+##Analysis  
+###Univariate Plot Analysis
+###Univariate Analysis
+###Bivariate Plot Analysis
+###Bivariate Analysis
+###Multivariate Plot Analysis
+###Multivariate Analysis
 
 ##Final Analysis and Plots
 ##Reflections
