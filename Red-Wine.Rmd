@@ -15,6 +15,8 @@ In 2013, theguardian, a UK based news company, posted an article with the title 
 wine <- read.csv("wineQualityReds.csv")  
 wine$X <- NULL #Unnecessary column
 library(ggplot2)  
+library(scales)
+library(gridExtra)#multple plots on 1 img
 ```
 ###1. Introduction
 The dataset is created by Paulo Cortez, ANtonio Credeira, Fernando Almeida, Telm Matos and Jose Reis in the year 2009. The dataset was used to write a paper called "Modeling wine preferences by data mining from physicochemical properties" by the previously named people. The type of red wine used are variants of the Portuguese "Vinho Verde" wine. This dataset contains only physicochemical and sensory variables, and there is no data with regards to grape types, wine brand, or wine selling price.
@@ -47,9 +49,86 @@ summary(wine)
 All of the variables have a mean and median that are close to each other, which suggests that there are not significant outliers in the dataset. To note however, chlorides, residual sugar, free sulfur dioxde, and total sulfur dioxide have max values that pulls the mean from the median, but I will need to dig further to see why and how it affects my analysis of the input variables. Keeping what I said in mind, the 1st quartile for quality is 5 and the 3rd quartile for quality is 6. Whatever a ranking of 5-6 means, it will probably reflect the median/mean values of the variables.  
 To understand this data, I will proceed in 2 ways. First, I need to gain a deeper understanding of variables in the context of wine tasting. Second, I will see how individual and grouped changes to variables affect the quality.  
 
-##Analysis  
-###Univariate Plot Analysis
+##Analysis
 ###Univariate Analysis
+```{r echo=FALSE}
+ggplot(aes(x=fixed.acidity),data=wine) + geom_histogram(binwidth=.1) + 
+  labs(title = "Fixed Acidity Count",x="Fixed Acidity")
+```
+```{r echo=FALSE}
+ggplot(aes(x=volatile.acidity),data=wine) + geom_histogram(binwidth=.01) + 
+  labs(title = "Volatile Acidity Count", x="Volatile Acidity")
+```
+```{r echo=FALSE}
+ggplot(aes(x=citric.acid),data=wine) + geom_histogram(binwidth=.01) + 
+  labs(title = "Citric Acid Count",x="Citric Acid")
+  median(wine$citric.acid)
+```
+Plotting citric acid, I see an interesting peak, at 0. Citric Acid of 0 is worth looking into.
+The median for this data is .26, so a substantial number of wines have citric acid on the lower end.
+```{r echo=FALSE}
+ggplot(aes(x=residual.sugar),data=wine) + geom_histogram(binwidth=.2) + 
+  labs(title = "Residual Sugar",x="Residual Sugar")
+  summary(wine$residual.sugar)
+```
+This plot has a normal curve with a positive skewness that goes on for a while. With the summary, I see that 75% of the data is below 2.6, so the rest of the 25% of residual sugar may relate to wine quality with a lower score.
+
+```{r echo=FALSE}
+ggplot(aes(x=chlorides),data=wine) + geom_histogram(binwidth=.01) + 
+  labs(title = "Chlorides Count", x="Chlorides")
+  summary(wine$chlorides)
+```
+Chlorides has a thin curve between 0 and 0.2, with positive skewness that goes past 0.6.
+By taking the summary, 75% of the data is below .09, with 1Q = .07, so 50% of the data is between .07 and .09.
+```{r echo=FALSE}
+ggplot(aes(x=free.sulfur.dioxide),data=wine) + geom_histogram(binwidth=1) + 
+  labs(title = "Free Sulfur Dioxide Count",x="Free Sulfur Dioxide")
+summary(wine$free.sulfur.dioxide)
+```
+The plot has a positive skewnes. As observed in earlier plots, this plot has 75% of its data below 21, with mean of 15.87 and median 14, the difference suggesting that some wines have a large amount of free sulfur dioxide and is pulling the mean away from the median.
+```{r echo=FALSE}
+ggplot(aes(x=total.sulfur.dioxide),data=wine) + geom_histogram(binwidth=2) + 
+  labs(title = "Total Sulfur Dioxide Count",x="Total Sulfur Dioxide")
+summary(wine$total.sulfur.dioxide)  
+```
+This data has positive skewness. 1Q = 22 and 3Q = 62 with a median of 38, so the rest of the 25% are substantially larger than the median, suggesting outliers or that we are dealing with a type of wine that is significantly different from the average, at least with respect to total sulfur dioxide count.
+
+```{r echo=FALSE}
+ggplot(aes(x=density),data=wine) + geom_histogram(binwidth=.0005) + 
+  labs(title = "Density Count",x="Density")
+summary(wine$density)
+```
+Majority of the data are not too far from each other. This data looks almost normal. I do not know what a difference in density between 1Q of .9956 and 3Q of .9978 could possibly suggest as of right now.
+
+```{r echo=FALSE}
+ggplot(aes(x=pH),data=wine) + geom_histogram(binwidth=.05) + 
+  labs(title = "pH Count",x="pH")
+summary(wine$pH)
+```
+The data for pH looks very normal.It has a median of 3.31 and a mean of 3.311, with 1Q=3.21 and 3Q=3.4. I do not know what effect these differences will have on quality, if any.
+
+```{r echo=FALSE}
+ggplot(aes(x=sulphates),data=wine) + geom_histogram(binwidth=.05) + 
+  labs(title = "Sulphates Count",x="Sulphates")
+summary(wine$sulphates)
+```
+mean = .658 while median = .62, which is evidence of higher sulphate values pulling the mean. This is reflected in the positive skewness of the pot, in which there are some number of wines with very large sulphate values.
+```{r echo=FALSE}
+ggplot(aes(x=alcohol),data=wine) + geom_histogram(binwidth=.1) + 
+  labs(title = "Alcohol Count",x="Alcohol")
+summary(wine$alcohol)
+```
+The majority of wines have an alcohol% somewhere between 9.5 and 11.10, and the max is 14.90. An angle for investigation would be the impact on quality with incremental increases in alcohol%
+
+```{r echo=FALSE}
+ggplot(aes(x=quality),data=wine) + geom_histogram(binwidth=1) + 
+  labs(title = "Quality Count",x="Quality")
+summary(wine$quality)
+```
+1Q=5, Median=6, and 3Q=6. This fairly boring but concentrated count in quality can be tested to see if they align with the "middle of the road" values in the input variables, and it is worth investigating what values from the input variables best contributed to values of 7 and 8.  
+
+From the univariate analysis, I feel that I have not learned much besides the fact that almost all of the wine data are fairly "normal". In the bivariate analysis, I need to nail down which of these input variables matter and to what extent they matter with respect to quality of the wine.
+
 ###Bivariate Plot Analysis
 ###Bivariate Analysis
 ###Multivariate Plot Analysis
