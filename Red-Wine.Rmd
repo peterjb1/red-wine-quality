@@ -18,6 +18,7 @@ library(ggplot2)
 library(scales)
 library(gridExtra)#multple plots on 1 img
 library(corrplot)
+library(RColorBrewer)
 ```
 ###1. Introduction
 The dataset is created by Paulo Cortez, ANtonio Credeira, Fernando Almeida, Telm Matos and Jose Reis in the year 2009. The dataset was used to write a paper called "Modeling wine preferences by data mining from physicochemical properties" by the previously named people. The type of red wine used are variants of the Portuguese "Vinho Verde" wine. This dataset contains only physicochemical and sensory variables, and there is no data with regards to grape types, wine brand, or wine selling price.
@@ -235,13 +236,61 @@ The mean and median values for quality 5, 6, and 7 are sufficiently different an
 In this bivariate analysis, I looked into alcohol, sulphates, citric acid, and volatile acidity. Alcohol, sulphates, and volatile acidity showed interesting relationships with regards to quality, while citric acid was shown to have no particular correlation with quality. 
 
 Here is a reminder of the 3 variables of interest.
-Alcohol is explanatory, the percentage of alcohol in the wine. Higher wine has been shown to be correlated with higher quality score.  
+Alcohol is the percentage of alcohol in the wine. Higher wine has been shown to be correlated with higher quality score.  
 Sulphates, which originate from sulphites, are added to wine as preservatives to prevent spoilage and oxidation. In other words, wine that are more fresh taste better, and sulphates help wine stay fresh.  
 Volatile acidity has been shown to be negatively correlated with quality. Volatile acidity is the amount of acetic acid in the wine, in which more volatile acidity would mean the wine has more of a vinegar taste and smell.  
 
 This concludes the bivariate analysis.  
 
 ###Multivariate Analysis
+```{r echo=FALSE}
+names(wine)
+```
 
-##Final Analysis and Plots
-##Reflections
+#### Quality vs alcohol and sulphates
+```{r echo=FALSE}
+ggplot(aes(x=sulphates,y=alcohol),data=wine)+ 
+  geom_point(aes(color=quality)) + geom_text(aes(label=quality),hjust=0, vjust=0)
+```
+
+Nothing in particular really sticks out here, with the exception of the cluster. Zooming in,
+
+```{r echo=FALSE}
+ggplot(aes(x=sulphates,y=alcohol),data=subset(wine,sulphates < 1 & alcohol < 12))+ 
+  geom_point(aes(color=quality)) + geom_text(aes(label=quality),hjust=0, vjust=0)
+```
+
+We see that to achieve a middle of the pack wine, quality = 5, is quite easy to achieve. You have a wide enough range of sulphates and alcohol to use, but trying to achieve a quality rating of 6+ is difficult using only information on alcohol and sulphates.
+
+#### Quality vs Volatile Acidity and Alcohol
+```{r echo=FALSE}
+ggplot(aes(x=volatile.acidity,y=alcohol),data=wine)+ 
+  geom_point(aes(color=quality)) + geom_text(aes(label=quality),hjust=0, vjust=0)
+```
+
+There is a large cluster of quality 5 between alcohol of 5 and 10, and volatile acidity of 0.4 and 0.8. However, there are 7, 6, 5 side by side.
+
+#### Quality vs Volatile Acidity and Sulphates
+```{r echo=FALSE}
+ggplot(aes(x=volatile.acidity,y=sulphates),data=wine)+ 
+  geom_point(aes(color=quality)) + geom_text(aes(label=quality),hjust=0, vjust=0)
+```
+
+Nothing to really differentiate quality ratings, but we see that a name of 5s have sulphates between 1 and 0.5, and volatile acidity between 0.4 and 0.8.
+
+```{r echo=FALSE}
+ggplot(aes(x=volatile.acidity,y=sulphates),data=subset(wine,quality==5 | quality == 6))+ 
+  geom_point(aes(color=quality)) + geom_text(aes(label=quality),hjust=0, vjust=0)
+```
+
+On the aggregate, there seems to be a lot of intersections between quality of 5 and 6, but, for example with sulphates, 6 tend to have higher sulphates and less volatile acidity, while 5 tend to have lower sulphates and higher volatile acidity.
+
+
+##Final Analysis
+
+What differentiates a quality of 4, 5, and 6 wine? Is a wine of quality 5 the median ranking of wine, and is that wine an average person would have no problem consuming?  
+During my analysis, I have been confronted with the issue of trying to find what differentiates a quality 6 from a 5, and a 7 from a 6. What has abundantly stood how however, is the substantal number of 5 and 6. This may have 2 possible answers.  
+1. The extent of wine tasting experts goes only to what tastes good, and all of the senses involved in taste, and so the average wine taster gravitates towards a par wine. In other words, wine tasting experts do not have a particular skill, but rather enjoy drinking wine and are experienced with drinking wine, and so they can tell when a wine is nothing special, or a 5.  
+2. The root of all of the 5 and 6 come from the data itself, in that the wine data just have properties that lend itself to all of the 5s and 6s, and that there are conceivable other datasets in which we would have more diversity in quality rankings.  
+
+Overall, I enjoyed doing the analysis and process of doing an analysis using R markdown.
